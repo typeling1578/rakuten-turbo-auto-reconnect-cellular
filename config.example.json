@@ -1,0 +1,6 @@
+{
+  "chromium_browser_path": "/usr/bin/chromium",
+  "dashboard_host": "192.168.210.1",
+  "username": "admin",
+  "password": "root"
+}
