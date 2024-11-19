@@ -42,14 +42,21 @@ export async function reconfig_lte_5g(page) {
   await page.reload();
 
   await page.waitForSelector(".lte-advanced-content select > option");
-  const current_value = await page.$eval(".lte-advanced-content select", node => node.value);
+  let current_value;
+  let wait_count = 0;
+  while (current_value !== "1" && current_value !== "2") {
+    if (wait_count >= 10) {
+      throw new Error("Invalid selected option");
+    }
+    await sleep(500);
+    current_value = await page.$eval(".lte-advanced-content select", node => node.value);
+    wait_count++;
+  }
   await sleep(500);
   if (current_value === "1") {
     await page.select(".lte-advanced-content select", "2");
   } else if (current_value === "2") {
     await page.select(".lte-advanced-content select", "1");
-  } else {
-    throw new Error("Invalid selected option");
   }
   await sleep(500);
   await page.select(".lte-advanced-content select", current_value);
